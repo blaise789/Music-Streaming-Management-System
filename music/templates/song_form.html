@@ -1,0 +1,7 @@
+<h1>{% if form.instance.id %}Edit{% else %}Add{% endif %} Song</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'song_list' %}">Cancel</a>

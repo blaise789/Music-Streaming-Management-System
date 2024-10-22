@@ -1,0 +1,7 @@
+<h1>Delete Song</h1>
+<p>Are you sure you want to delete "{{ song.title }}"?</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirm Delete</button>
+</form>
+<a href="{% url 'song_list' %}">Cancel</a>

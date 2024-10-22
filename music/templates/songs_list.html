@@ -1,0 +1,14 @@
+<h1>Songs</h1>
+<a href="{% url 'song_create' %}">Add New Song</a>
+<ul>
+    {% for song in songs %}
+        <li>
+            <a href="{% url 'song_detail' song.id %}">{{ song.title }}</a>
+            <a href="{% url 'song_update' song.id %}">Edit</a>
+            <form action="{% url 'song_delete' song.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,14 @@
+<h1>{{ song.title }}</h1>
+<p>Duration: {{ song.duration }}</p>
+<p>Album: {{ song.album.title }}</p>
+<p>Artist: {{ song.artist.name }}</p>
+<audio controls>
+    <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<a href="{% url 'song_update' song.id %}">Edit</a>
+<form action="{% url 'song_delete' song.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form>
+<a href="{% url 'song_list' %}">Back to Songs</a>
