@@ -1,11 +1,5 @@
 from django.urls import path
-from .views import (
-    signup,
-    login_view,
-    logout_view,
-    profile,
-    edit_profile,
-)
+from .views import *
 
 urlpatterns = [
     path('signup/', signup, name='signup'),            # URL for user registration

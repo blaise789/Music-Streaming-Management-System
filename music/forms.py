@@ -1,13 +1,16 @@
 # forms.py
 from django import forms
-from .models import Song, Album
+from .models import Song
+# , Album
 
 class SongForm(forms.ModelForm):
     class Meta:
         model = Song
-        fields = ['title',  'album', 'artist', 'audio_file']
+        fields = ['title',  'artist', 'audio_file','genre']
 
-class AlbumForm(forms.ModelForm):
-    class Meta:
-        model = Album
-        fields = ['title', 'artist', 'release_date', 'genre']
+# class AlbumForm(forms.ModelForm):
+#     class Meta:
+        
+#         exclude=['artist']
+#         model = Album
+#         fields = ['title', 'artist', 'genre']

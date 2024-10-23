@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import User, Profile
-from .forms import SignupForm, ProfileForm
+from .forms import LoginForm, SignupForm, ProfileForm
 
 def signup(request):
     if request.method == 'POST':
@@ -16,11 +16,11 @@ def signup(request):
             user = User(
                 username=form.cleaned_data['username'],
                 email=form.cleaned_data['email'],
-                password_hash=make_password(form.cleaned_data['password']),
+                password=make_password(form.cleaned_data['password']),
             )
             user.save()
             # Automatically log in the user after signup
-            
+
             return redirect('profile', user_id=user.id)
     else:
         form = SignupForm()
@@ -28,14 +28,23 @@ def signup(request):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        form=LoginForm(request.POST)
+        user=None
+        if form.is_valid():
+              email = form.cleaned_data['email']  
+# Extract the email
+              password = form.cleaned_data['password']  
+              user = authenticate(request, email=email,password=password)
+              print(user)
+              
         if user is not None:
+            print(user)
+            print("user is authenticated")
             login(request, user)
             return redirect('profile', user_id=user.id)
         else:
             return render(request, 'login.html', {'error': 'Invalid credentials'})
+
     return render(request, 'login.html')
 
 def logout_view(request):
