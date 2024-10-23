@@ -35,7 +35,8 @@ class Song(models.Model):
     duration = models.DurationField()
     # album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='songs')
     artist = models.ForeignKey(User, on_delete=models.CASCADE)
-    audio_file = models.FileField(upload_to='media/')
+    audio_file = models.FileField(upload_to='media/songs')
+    song_cover = models.ImageField(upload_to='media/images', blank=True)  
     genre=models.CharField(max_length=50, choices=GENRE_CHOICES)
     class  Meta:
         db_table = 'songs'

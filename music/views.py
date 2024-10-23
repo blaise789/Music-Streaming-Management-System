@@ -10,7 +10,6 @@ from mutagen import File  # Import the mutagen library
 
 @login_required
 def song_create(request):
-    
     if request.method == 'POST':
         form = SongForm(request.POST, request.FILES)
         if form.is_valid():
@@ -51,10 +50,11 @@ def song_delete(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     if request.method == 'POST':
         song.delete()
+        
         return redirect('song_list')
     return render(request, 'song_confirm_delete.html', {'song': song})
 
-# # Album Views
+# Album Views
 # def album_list(request):
 #     albums = Album.objects.all()
 #     return render(request, 'album_list.html', {'albums': albums})

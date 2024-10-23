@@ -27,7 +27,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path('songs/', song_list, name='song_list'),
+    
+    path('', song_list, name='song_list'),
     path('songs/<int:song_id>/', song_detail, name='song_detail'),
     path('songs/create/', song_create, name='song_create'),
     path('songs/update/<int:song_id>/', song_update, name='song_update'),

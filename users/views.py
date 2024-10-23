@@ -41,7 +41,7 @@ def login_view(request):
             print(user)
             print("user is authenticated")
             login(request, user)
-            return redirect('profile', user_id=user.id)
+            return redirect('/', user_id=user.id)
         else:
             return render(request, 'login.html', {'error': 'Invalid credentials'})
 

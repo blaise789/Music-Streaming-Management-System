@@ -1,4 +1,5 @@
 <h1>Songs</h1>
+{% comment %} {% extends "base.html" %} {% endcomment %}
 <a href="{% url 'song_create' %}">Add New Song</a>
 <ul>
     {% for song in songs %}

@@ -6,7 +6,7 @@ from .models import Song
 class SongForm(forms.ModelForm):
     class Meta:
         model = Song
-        fields = ['title',  'artist', 'audio_file','genre']
+        fields = ['title',  'artist', 'audio_file','song_cover','genre']
 
 # class AlbumForm(forms.ModelForm):
 #     class Meta:
