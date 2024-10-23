@@ -29,7 +29,8 @@ def song_list(request):
     return render(request, 'songs_list.html', {'songs': songs})
 def song_detail(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-    return render(request, 'song_detail.html', {'song': song})
+        
+    return render(request, 'song_details.html', {'song': song})
 
 
 

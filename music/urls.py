@@ -29,7 +29,7 @@ from .views import (
 urlpatterns = [
     
     path('', song_list, name='song_list'),
-    path('songs/<int:song_id>/', song_detail, name='song_detail'),
+    path('songs/<int:song_id>/', song_detail, name='song_details'),
     path('songs/create/', song_create, name='song_create'),
     path('songs/update/<int:song_id>/', song_update, name='song_update'),
     path('songs/delete/<int:song_id>/', song_delete, name='song_delete'),
