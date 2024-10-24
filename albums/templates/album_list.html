@@ -1,14 +1,26 @@
-<h1>Albums</h1>
-<a href="{% url 'album_create' %}">Add New Album</a>
-<ul>
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <h1 class="mt-4">Albums</h1>
+  <a href="{% url 'album_create' %}" class="btn btn-primary mb-3">Add New Album</a>
+  {% if albums %}
+  <div class="list-group">
     {% for album in albums %}
-        <li>
-            <a href="{% url 'album_detail' album.id %}">{{ album.title }}</a>
-            <a href="{% url 'album_update' album.id %}">Edit</a>
-            <form action="{% url 'album_delete' album.id %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
+    <div class="list-group-item list-group-item-action">
+      <a href="{% url 'album_detail' album.id %}">{{ album.title }}</a>
+      <a href="{% url 'album_update' album.id %}">Edit</a>
+      <form
+        action="{% url 'album_delete' album.id %}"
+        method="POST"
+        style="display: inline"
+      >
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+      </form>
+    </div>
     {% endfor %}
-</ul>
+  </div>
+  {% else %}
+  <div class="alert alert-info">No playlists found.</div>
+  {% endif %}
+</div>
+{% endblock content %}

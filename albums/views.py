@@ -20,8 +20,9 @@ def album_create(request):
     if request.method == 'POST':
         form = AlbumForm(request.POST)
         if form.is_valid():
-            # update the form with artist_id            
-            form.save()
+            album=form.save(commit=False)
+            album.artist=request.user
+            album.save()
             return redirect('album_list')
     else:
         form = AlbumForm()

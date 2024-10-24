@@ -7,4 +7,4 @@ class AlbumForm(forms.ModelForm):
         
         exclude=['artist']
         model = Album
-        fields = ['title', 'artist', 'release_date']
+        fields = ['title', 'artist']

@@ -12,4 +12,6 @@ class Playlist(models.Model):
     created_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"{self.name} by {self.user.username}"
-    
+    class  Meta:
+        db_table = 'playlists'
+       

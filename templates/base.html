@@ -37,9 +37,9 @@
                     <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Playlists</a>
+                        <a class="dropdown-item" href="{% url 'playlist_list'%}">Playlists</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Albums</a>
+                        <a class="dropdown-item" href="{% url 'album_list' %}">Albums</a>
                         </div>
                 </div>
                 {% endif %}

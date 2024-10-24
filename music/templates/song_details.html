@@ -38,7 +38,7 @@
                     <h3 class="product-title">{{song.title}}</h3>
                     <h6>Album: {{song.album}}</h6>
                     <h6>Artist: {{song.artist.username}}</h6>
-                    <h6>Release Year: {{song.year}}</h6>
+                    <h6>Release Year: {{song.release_year}}</h6>
                     <br>
                 
                     <a href="{% url 'song_update' song.id %}" class="btn btn-primary" style="float: left; margin-top:16px;">
@@ -52,7 +52,7 @@
                             <option selected="selected" disabled style="color: black;">Add to Playlist</option>
                             {% if playlists %}
                             {% for playlist in playlists %}
-                            <option value="{{playlist.playlist_name}}">{{playlist.playlist_name}}</option>
+                            <option value="{{playlist.name}}" >{{playlist.name}}</option>
                             {% endfor %}
                             {% endif %}
                         </select>

@@ -9,7 +9,7 @@
     {% if playlist.songs.count %}
     <ul class="list-group">
         {% for song in playlist.songs.all %}
-        <li class="list-group-item">{{ song.title }} by {{ song.singer }}</li>
+        <li class="list-group-item">{{ song.title }} by {{ song.artist.username }}</li>
         {% endfor %}
     </ul>
     {% else %}

@@ -2,11 +2,13 @@
 from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+# import message
+from django.contrib import messages
+from playlists.models import Playlist
 from .models import Song
 # , Album
 from .forms import SongForm
-# , AlbumForm
-from mutagen import File  # Import the mutagen library
+from mutagen import File  
 
 @login_required
 def song_create(request):
@@ -29,8 +31,13 @@ def song_list(request):
     return render(request, 'songs_list.html', {'songs': songs})
 def song_detail(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-        
-    return render(request, 'song_details.html', {'song': song})
+    playlists=Playlist.objects.filter(user=request.user) 
+    if request.method == 'POST':
+        playlist_name=request.POST.get('playlist')
+        playlist=Playlist.objects.get(name=playlist_name,user=request.user)
+        playlist.songs.add(song)
+        messages.success(request,f'Song "{song.title}" has been added to "{playlist.name}".')
+    return render(request, 'song_details.html', {'song': song,'playlists': playlists})
 
 
 
@@ -51,7 +58,5 @@ def song_delete(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     if request.method == 'POST':
         song.delete()
-        
         return redirect('song_list')
     return render(request, 'song_confirm_delete.html', {'song': song})
-

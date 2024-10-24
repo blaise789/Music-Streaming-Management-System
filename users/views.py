@@ -19,9 +19,8 @@ def signup(request):
                 password=make_password(form.cleaned_data['password']),
             )
             user.save()
-            # Automatically log in the user after signup
 
-            return redirect('profile', user_id=user.id)
+            return redirect('/', user_id=user.id)
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
