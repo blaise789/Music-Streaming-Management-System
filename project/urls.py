@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
     path('', include('music.urls')),
+    path("",include('playlists.urls')),
     # path('playlists/', include('playlists.urls')),
 ]
 

@@ -1,6 +1,7 @@
 # models.py
 from django.db import models
 
+from albums.models import Album
 from users.models import User
 
 # class Artist(models.Model):
@@ -8,23 +9,7 @@ from users.models import User
 #     def __str__(self):
 #         return self.name
 
-# class Album(models.Model):
-#     # genre choices
-#     GENRE_CHOICES = [
-#         ('Pop', 'Pop'),
-#         ('Rock', 'Rock'),
-#         ('Hip-hop', 'Hip-hop'),
-#         ('R&B', 'R&B')]
-    
-#     title = models.CharField(max_length=200)
-#     artist= models.ForeignKey(User, on_delete=models.CASCADE, related_name='albums')
-#     genre=models.CharField(max_length=50,name="genre" ,choices=GENRE_CHOICES)
-#     release_date = models.DateField(auto_now=True)
-#     class  Meta:
-#         db_table = 'albums'
 
-#     def __str__(self):
-        # return self.title
 
 class Song(models.Model):
     GENRE_CHOICES = [
@@ -33,11 +18,14 @@ class Song(models.Model):
         ('Hip-hop', 'Hip-hop')]
     title = models.CharField(max_length=150)
     duration = models.DurationField()
-    # album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='songs')
-    artist = models.ForeignKey(User, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='songs')
+    artist = models.ForeignKey(User, on_delete=models.CASCADE,related_name='songs')
     audio_file = models.FileField(upload_to='media/songs')
     song_cover = models.ImageField(upload_to='media/images', blank=True)  
     genre=models.CharField(max_length=50, choices=GENRE_CHOICES)
+    release_year = models.PositiveIntegerField(null=True,blank=True)  
+    created_at=models.DateTimeField(auto_now=True)
+
     class  Meta:
         db_table = 'songs'
     def __str__(self):
