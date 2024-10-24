@@ -1,11 +1,86 @@
-<h2>Login</h2>
-<form method="POST" action="{% url 'login'%}">
-    {% csrf_token %}
-    <label for="email">Email:</label>
-    <input type="text" name="email" required>
-    <label for="password">Password:</label>
-    <input type="password" name="password" required>
-    <button type="submit">Login</button>
-</form>
+{% extends 'base.html' %}
+{% block title %} MusicApp | Login {% endblock title %}
 
-<a href="{% url 'signup' %}">Don't have an account? Sign up</a>
+{% block header %}
+<style>
+    main{
+        margin-top: 60px;
+    }
+    form {
+        width: 100%;
+        max-width: 400px; /* Limit form width to make it look cleaner */
+        margin: 0 auto; /* Center the form horizontally */
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    input[type="password"],
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .form-footer a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .form-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock header %}
+
+{% block content %}
+
+<main role="main">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} 
+        
+        <button class="btn btn-success btn-block" type="submit">Log In</button>
+    </form>
+    <div class="form-footer">
+        <p>Don't have an account? Please <a href="{% url 'signup' %}">sign up</a>.</p>
+    </div>
+</main>
+{% endblock content %}

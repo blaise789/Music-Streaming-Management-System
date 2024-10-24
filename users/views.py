@@ -43,9 +43,12 @@ def login_view(request):
             login(request, user)
             return redirect('/', user_id=user.id)
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
-
-    return render(request, 'login.html')
+            form=LoginForm()
+            return render(request, 'login.html', {'error': 'Invalid credentials','form': form})
+    else:
+      form = LoginForm()
+            
+    return render(request, 'login.html', {'form': form})
 
 def logout_view(request):
     logout(request)
