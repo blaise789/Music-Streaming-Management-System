@@ -7,20 +7,19 @@
     {% for album in albums %}
     <div class="list-group-item list-group-item-action">
       <a href="{% url 'album_detail' album.id %}">{{ album.title }}</a>
-      <a href="{% url 'album_update' album.id %}">Edit</a>
       <form
         action="{% url 'album_delete' album.id %}"
         method="POST"
         style="display: inline"
       >
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
       </form>
     </div>
     {% endfor %}
   </div>
   {% else %}
-  <div class="alert alert-info">No playlists found.</div>
+  <div class="alert alert-info">No Album found.</div>
   {% endif %}
 </div>
 {% endblock content %}

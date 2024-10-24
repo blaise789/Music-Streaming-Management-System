@@ -1,12 +1,10 @@
-# views.py
 from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-# import message
 from django.contrib import messages
 from playlists.models import Playlist
-from .models import Song
-# , Album
+from users.models import User
+from .models import Song, Album  # Ensure Album is imported
 from .forms import SongForm
 from mutagen import File  
 
@@ -21,25 +19,47 @@ def song_create(request):
             duration = audio.info.length  
             song.duration = timedelta(seconds=duration)
             song.save()
+            messages.success(request, f'Song "{song.title}" has been created successfully.')
             return redirect('song_list')
     else:
         form = SongForm()
     return render(request, 'song_form.html', {'form': form})
 
 def song_list(request):
+    query = request.GET.get('q', '')
+    genre = request.GET.get('genre', '')
+    artist = request.GET.get('artist', '')
+
     songs = Song.objects.all()
-    return render(request, 'songs_list.html', {'songs': songs})
+
+    if query:
+        songs = songs.filter(title__icontains=query)
+    if genre:
+        songs = songs.filter(genre__icontains=genre)
+    if artist:
+        songs = songs.filter(artist__username__icontains=artist)
+
+    all_genres = Song.objects.values_list('genre', flat=True).distinct()  
+    all_artists = User.objects.values_list('username', flat=True).distinct()
+
+    return render(request, 'songs_list.html', {
+        'songs': songs,
+        'all_genres': all_genres,
+        'all_artists': all_artists,
+        'query': query,
+        'selected_genre': genre,
+        'selected_artist': artist,
+    })
+
 def song_detail(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-    playlists=Playlist.objects.filter(user=request.user) 
+    playlists = Playlist.objects.filter(user=request.user) 
     if request.method == 'POST':
-        playlist_name=request.POST.get('playlist')
-        playlist=Playlist.objects.get(name=playlist_name,user=request.user)
+        playlist_name = request.POST.get('playlist')
+        playlist = Playlist.objects.get(name=playlist_name, user=request.user)
         playlist.songs.add(song)
-        messages.success(request,f'Song "{song.title}" has been added to "{playlist.name}".')
-    return render(request, 'song_details.html', {'song': song,'playlists': playlists})
-
-
+        messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
+    return render(request, 'song_details.html', {'song': song, 'playlists': playlists})
 
 @login_required
 def song_update(request, song_id):
@@ -48,6 +68,7 @@ def song_update(request, song_id):
         form = SongForm(request.POST, request.FILES, instance=song)
         if form.is_valid():
             form.save()
+            messages.success(request, f'Song "{song.title}" has been updated successfully.')
             return redirect('song_list')
     else:
         form = SongForm(instance=song)
@@ -58,5 +79,7 @@ def song_delete(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     if request.method == 'POST':
         song.delete()
+        messages.success(request, f'Song "{song.title}" has been deleted successfully.')
         return redirect('song_list')
     return render(request, 'song_confirm_delete.html', {'song': song})
+

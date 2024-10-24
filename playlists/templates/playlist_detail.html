@@ -9,13 +9,12 @@
     {% if playlist.songs.count %}
     <ul class="list-group">
         {% for song in playlist.songs.all %}
-        <li class="list-group-item">{{ song.title }} by {{ song.artist.username }}</li>
+       <a href="{% url 'song_details' song.id %}" > <li class="list-group-item">{{ song.title }} by {{ song.artist.username }}</li></a>
         {% endfor %}
     </ul>
     {% else %}
     <div class="alert alert-info">No songs in this playlist.</div>
     {% endif %}
-    <a href="{% url 'playlist_edit' playlist.pk %}" class="btn btn-warning mt-3">Edit Playlist</a>
     <form action="{% url 'playlist_delete' playlist.pk %}" method="post" style="display:inline;">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger mt-3">Delete Playlist</button>

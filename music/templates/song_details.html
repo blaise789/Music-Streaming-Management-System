@@ -58,7 +58,7 @@
                         </select>
                     </form>
 
-                    <form method="post">
+                    <form method="post" action="{% url 'song_delete' song.id%}">
                         {% csrf_token %}
                         <span class="d-flex align-items-center mt-2 ml-2">
                             <button type="submit" name="delete-fav" class="btn btn-danger btn-block"

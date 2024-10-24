@@ -1,7 +1,74 @@
-<h1>{% if form.instance.id %}Edit{% else %}Add{% endif %} Song</h1>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
-<a href="{% url 'song_list' %}">Cancel</a>
+{% extends 'base.html' %}
+
+{% block title %}
+{% if form.instance.id %}Edit{% else %}Add{% endif %} Song
+{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 600px; /* Max width for the form */
+        margin: 50px auto; /* Center the form horizontally and add top margin */
+        padding: 30px; /* Padding inside the form container */
+        background-color: white; /* Background color for the form */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+    .form-container h1 {
+        text-align: center; /* Center the heading */
+        color: #343a40; /* Dark gray color for the heading */
+        margin-bottom: 20px; /* Space below the heading */
+    }
+    .form-container p {
+        margin-bottom: 15px; /* Space between each form field */
+    }
+    .form-container label {
+        font-weight: bold; /* Bold labels for better readability */
+        margin-top: 10px; /* Space above labels */
+    }
+    .form-control {
+        width: 100%; /* Full width for input fields */
+        padding: 10px; /* Padding for input fields */
+        border-radius: 5px; /* Rounded corners */
+        border: 1px solid #ced4da; /* Light gray border */
+        transition: border-color 0.3s; /* Transition effect for focus */
+        margin-bottom: 15px; /* Space below input fields */
+    }
+    .form-control:focus {
+        border-color: #007bff; /* Change border color on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle shadow on focus */
+    }
+    .btn-custom {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white; /* Text color for the button */
+        padding: 10px; /* Padding for the button */
+        border: none; /* Remove default border */
+        border-radius: 5px; /* Rounded corners */
+        width: 100%; /* Full width */
+        transition: background-color 0.3s; /* Transition effect for hover */
+    }
+    .btn-custom:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+    }
+    .btn-link {
+        display: block; /* Make the cancel link block level */
+        text-align: center; /* Center the link */
+        margin-top: 20px; /* Top margin for spacing */
+        color: #007bff; /* Bootstrap primary color */
+        text-decoration: none; /* Remove underline */
+    }
+    .btn-link:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+
+<div class="form-container">
+    <h1>{% if form.instance.id %}Edit{% else %}Add{% endif %} Song</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-custom">Save</button>
+    </form>
+    <a href="{% url 'song_list' %}" class="btn btn-link">Cancel</a>
+</div>
+{% endblock %}

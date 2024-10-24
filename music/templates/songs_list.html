@@ -1,6 +1,7 @@
-{% extends "base.html" %} {% block content%} {% comment %} search songs based on
-genre and artists {% endcomment %} {% comment %}
-<a href="{% url 'song_create' %}">Add New Song</a> {% endcomment %}
+{% extends "base.html" %}
+
+{% block content %}
+{% comment %} search songs based on genre and artists {% endcomment %}
 <br />
 
 <div class="container">
@@ -8,52 +9,66 @@ genre and artists {% endcomment %} {% comment %}
     <form class="form-horizontal" role="search" method="get" action="">
       <div class="form-group">
         <div class="input-group">
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control input-lg"
-              style="border-radius: 5px"
-              name="q"
-              value="{{ request.GET.q }}"
-              placeholder="Search Songs "
-            />
+          <input
+            type="text"
+            class="form-control input-lg"
+            style="border-radius: 5px"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search Songs"
+          />
 
-            <select
-              name="languages"
-              class="custom-select mx-1"
-              style="border-radius: 5px"
+          <select
+            name="genre"
+            class="custom-select mx-1"
+            style="border-radius: 5px"
+          >
+            <option value="" {% if not selected_genre %}selected{% endif %}>
+              All Genres
+            </option>
+            {% for genre in all_genres %}
+            <option
+              value="{{ genre }}"
+              {% if genre == selected_genre %}selected{% endif %}
             >
-              <option selected="selected" disabled>genres</option>
-              {% if all_languages %} {% for language in all_languages %}
-              <option value="{{language}}">{{language}}</option>
-              {% endfor %} {% endif %}
-            </select>
-            <select
-              name="singers"
-              class="custom-select mx-1"
-              style="border-radius: 5px"
-            >
-              <option selected="selected" disabled>Singers</option>
-              {% if all_singers %} {% for singer in all_singers %}
-              <option value="{{singer}}">{{singer}}</option>
-              {% endfor %} {% endif %}
-            </select>
+              {{ genre }}
+            </option>
+            {% endfor %}
+          </select>
 
-            <span class="input-group-btn">
-              <button
-                type="submit"
-                style="border-radius: 5px"
-                class="btn btn-primary"
-              >
-                Search
-              </button>
-            </span>
-          </div>
+          <select
+            name="artist"
+            class="custom-select mx-1"
+            style="border-radius: 5px"
+          >
+            <option value="" {% if not selected_artist %}selected{% endif %}>
+              All Artists
+            </option>
+            {% for artist in all_artists %}
+            <option
+              value="{{ artist }}"
+              {% if artist == selected_artist %}selected{% endif %}
+            >
+              {{ artist }}
+            </option>
+            {% endfor %}
+          </select>
+
+          <span class="input-group-btn">
+            <button
+              type="submit"
+              style="border-radius: 5px"
+              class="btn btn-primary"
+            >
+              Search
+            </button>
+          </span>
         </div>
       </div>
     </form>
   </div>
-  {% if not query_search %}
+
+  {% if not query and not selected_genre and not selected_artist %}
   <header class="section-heading">
     <h5 class="section-title">ALL SONGS</h5>
   </header>
@@ -64,12 +79,14 @@ genre and artists {% endcomment %} {% comment %}
   </header>
   <hr />
   {% endif %}
+
   <div class="row" style="margin-right: 65px; margin-left: -15px">
-    {% if songs %} {% for song in songs %}
+    {% if songs %}
+    {% for song in songs %}
     <div class="col-sm-2 col-md-2" style="padding-bottom: 15px">
       <div class="hovereffect">
         <img
-          src="{{ song.song_cover.url}}"
+          src="{{ song.song_cover.url }}"
           class="img-responsive"
           height="135"
           width="135"
@@ -89,13 +106,16 @@ genre and artists {% endcomment %} {% comment %}
         </div>
       </div>
     </div>
-    {% endfor %} {% endif %}
+    {% endfor %}
+    {% else %}
+    <p class="alert alert-info">No songs found.</p>
+    {% endif %}
   </div>
 </div>
+
 <br />
 <br />
 <br />
 <br />
 
-
- {% endblock %} 
+{% endblock %}

@@ -1,23 +1,86 @@
-<h1>{{ album.title }}</h1>
-<p>Artist: {{ album.artist.name }}</p>
-<p>Release Date: {{ album.release_date }}</p>
-<p>Genre: {{ album.genre.name }}</p>
-<h2>Songs</h2>
-<ul>
-    {% for song in album.songs.all %}
-        <li>
-            <a href="{% url 'song_detail' song.id %}">{{ song.title }}</a>
-            <a href="{% url 'song_update' song.id %}">Edit</a>
-            <form action="{% url 'song_delete' song.id %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'album_update' album.id %}">Edit Album</a>
-<form action="{% url 'album_delete' album.id %}" method="POST">
-    {% csrf_token %}
-    <button type="submit">Delete Album</button>
-</form>
-<a href="{% url 'album_list' %}">Back to Albums</a>
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-4 p-4 bg-white shadow rounded">
+    <header class="section-heading text-center mb-4">
+        <h2 class="section-title">{{ album.title }}</h2>
+        <p><strong>Artist:</strong> {{ album.artist.username }}</p>
+        <p><strong>Release Date:</strong> {{ album.release_date }}</p>
+    </header>
+    <hr />
+
+    <h4 class="mb-3">Songs in this Album:</h4>
+    <div class="row">
+        {% if album.songs.all %}
+        {% for song in album.songs.all %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card shadow h-100">
+                <img
+                    src="{{ song.song_cover.url }}"
+                    class="card-img-top"
+                    alt="{{ song.title }}"
+                    style="height: 200px; object-fit: cover; border-radius: 5px"
+                />
+                <div class="card-body text-center">
+                    <h6 class="card-title">{{ song.title }}</h6>
+                </div>
+                <div class="card-footer text-center">
+                    <a
+                        class="btn btn-outline-primary mx-1"
+                        href="{% url 'song_details' song.id %}"
+                    >
+                        <i class="fa fa-play" aria-hidden="true"></i> Play
+                    </a>
+                    <a
+                        class="btn btn-outline-info mx-1"
+                        href="{% url 'song_details' song.id %}"
+                    >
+                        <i class="fa fa-info-circle" aria-hidden="true"></i> Info
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-12">
+            <p>No songs available in this album.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <hr />
+
+    <h4 class="mb-3">Add Song to Album:</h4>
+    <form class="form-inline" method="post" action="{% url 'add_song_to_album' album.id %}">
+        {% csrf_token %}
+        <div class="form-group mb-2 mr-sm-2">
+            <select
+                name="song"
+                class="custom-select"
+                required
+            >
+                <option selected disabled>Select a Song</option>
+                {% for song in all_songs %}
+                    <option value="{{ song.id }}">{{ song.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button
+            type="submit"
+            class="btn btn-primary mb-2"
+        >
+            Add Song
+        </button>
+    </form>
+
+    <!-- Display validation errors or success messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mt-3" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}
