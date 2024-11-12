@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% comment %} search songs based on genre and artists {% endcomment %}
 <br />
-
 <div class="container">
   <div class="col-md-13">
     <form class="form-horizontal" role="search" method="get" action="">
@@ -98,11 +96,7 @@
             href="{% url 'song_details' song.id %}"
             ><i class="fa fa-play" aria-hidden="true"></i
           ></a>
-          <a
-            class="btn btn-outline-light mt-5 mx-1"
-            href="{% url 'song_details' song.id %}"
-            ><i class="fa fa-info-circle" aria-hidden="true"></i
-          ></a>
+         
         </div>
       </div>
     </div>

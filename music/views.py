@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponse
 from playlists.models import Playlist
 from users.models import User
 from .models import Song, Album  # Ensure Album is imported
@@ -18,7 +19,10 @@ def song_create(request):
             audio = File(audio_file)
             duration = audio.info.length  
             song.duration = timedelta(seconds=duration)
+            song.artist = request.user 
+            print(song.artist)
             song.save()
+            
             messages.success(request, f'Song "{song.title}" has been created successfully.')
             return redirect('song_list')
     else:
@@ -82,4 +86,16 @@ def song_delete(request, song_id):
         messages.success(request, f'Song "{song.title}" has been deleted successfully.')
         return redirect('song_list')
     return render(request, 'song_confirm_delete.html', {'song': song})
+def song_play(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
 
+    # Handle the song playback logic here
+    # This might involve streaming the audio file, redirecting to a streaming service,
+    # or generating a download link.
+
+    # Example: Streaming the audio file directly
+    response = HttpResponse(content_type='audio/mpeg')
+    response['Content-Disposition'] = f'attachment; filename="{song.title}.mp3"'
+    with song.audio_file.open('rb') as f:
+        response.write(f.read())
+    return response

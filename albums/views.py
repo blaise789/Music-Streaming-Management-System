@@ -51,16 +51,15 @@ def album_delete(request, album_id):
 
 @login_required
 def add_song_to_album(request, album_id):
-    album = get_object_or_404(Album, id=album_id)  # Fetch the album
-
+    album = get_object_or_404(Album, id=album_id)
     if request.method == 'POST':
-        song_id = request.POST.get('song')  # Get the selected song ID
-        song = get_object_or_404(Song, id=song_id)  # Fetch the song
-        
-        # Add the song to the album
-        album.songs.add(song)  # Add the song to the album's ManyToMany field
+        song_id = request.POST.get('song')
+        if not song_id:
+            messages.error(request, 'No song selected.')
+            return redirect('album_detail', album_id=album.id)
+        song = get_object_or_404(Song, id=song_id)
+        album.songs.add(song)
         messages.success(request, f'Song "{song.title}" has been added to the album "{album.title}".')
-        return redirect('album_details', album_id=album.id)  # Redirect to the album details page
-
-    return redirect('album_list')  # Fallback if the request method is not POST
+        return redirect('album_detail', album_id=album.id)
+    return redirect('album_list')
 
