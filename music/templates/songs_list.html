@@ -120,7 +120,7 @@
 {% if last_played %}
 <footer class="footer">
   <div class="player" style="padding-left: 10px;padding-top:10px;background-color: #459dfb;">
-    <div class="left"><img src="{{last_played.song_cover}}" height="90" width="90" style="border-radius: 10px 10px 10px 10px;"></div>
+    <div class="left"><img src="{{last_played.song_cover.url}}" height="90" width="90" style="border-radius: 10px 10px 10px 10px;"></div>
     <div class="right">
        <div class="top">
           <a class="song" style="margin-left: 15px;color: white;">{{last_played.title}}</a>
@@ -128,9 +128,9 @@
        </div>
        <div class="bottom">
         {% if first_time %}
-          <audio controls=""  name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.audio_file}}" type="audio/mpeg" ></audio>
+          <audio controls=""  name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.audio_file.url}}" type="audio/mpeg" ></audio>
         {% else %}
-          <audio controls="" autoplay name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.audio_file}}" type="audio/mpeg" ></audio>
+          <audio controls="" autoplay name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.audio_file.url}}" type="audio/mpeg" ></audio>
         {% endif %}
         </div>
     </div>

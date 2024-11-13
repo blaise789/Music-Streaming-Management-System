@@ -16,13 +16,19 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    
-    path('', song_list, name='song_list'),
+    path('', index, name='index'),
+    path('all_songs/', song_list, name='song_list'),
     path('songs/<int:song_id>/', song_detail, name='song_details'),
     path('songs/create/', song_create, name='song_create'),
     path('songs/update/<int:song_id>/', song_update, name='song_update'),
     path('songs/delete/<int:song_id>/', song_delete, name='song_delete'),
-    path('songs/play/<int:song_id>/', play_song, name='song_play')
+    path('play_song/<int:song_id>/', play_song_index, name='play_song_index'),
+    path('songs/play/<int:song_id>/', play_song, name='song_play'),
+    path('recent/', recent, name='recent'),
+    path('rock_songs/', rock_songs, name='rock_songs'),
+    path('play_recent_song/<int:song_id>/', play_recent_song, name='play_recent_song'),
+    
+    
 
 
    

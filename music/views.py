@@ -2,12 +2,70 @@ from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponse
 from playlists.models import Playlist
 from users.models import User
 from .models import Recent, Song, Album  # Ensure Album is imported
 from .forms import SongForm
 from mutagen import File  
+def index(request):
+    #Display recent songs
+    if request.user.is_authenticated:
+        recent = list(Recent.objects.filter(user=request.user).values('song_id').order_by('-id'))
+        recent_id = [each['song_id'] for each in recent][:5]
+        recent_songs_unsorted = Song.objects.filter(id__in=recent_id,recent__user=request.user)
+        recent_songs = list()
+        for id in recent_id:
+            recent_songs.append(recent_songs_unsorted.get(id=id))
+    else:
+        recent = None
+        recent_songs = None
+
+    first_time = False
+    #Last played song
+    if  request.user.is_authenticated:
+        last_played_list = list(Recent.objects.filter(user=request.user).values('song_id').order_by('-id'))
+        if last_played_list:
+            last_played_id = last_played_list[0]['song_id']
+            last_played_song = Song.objects.get(id=last_played_id)
+        else:
+            first_time = True
+            last_played_song = None
+
+    else:
+        first_time = True
+        last_played_song = None
+
+    #Display all songs
+    songs = Song.objects.all()
+
+    #Display few songs on home page
+    songs_all = list(Song.objects.all().values('id').order_by('?'))
+    sliced_ids = [each['id'] for each in songs_all][:5]
+    indexpage_songs = Song.objects.filter(id__in=sliced_ids)
+        # Display Rock Songs
+    songs_rock = list(Song.objects.filter(genre='Rock').values('id'))
+    sliced_ids = [each['id'] for each in songs_rock][:5]
+    indexpage_rock_songs = Song.objects.filter(id__in=sliced_ids)
+    
+    if len(request.GET) > 0:
+        search_query = request.GET.get('q')
+        filtered_songs = songs.filter(Q(title__icontains=search_query)).distinct()
+        context = {'all_songs': filtered_songs,'last_played':last_played_song,'query_search':True}
+        return render(request, 'index.html', context)
+
+    context = {
+        'all_songs':indexpage_songs,
+        'recent_songs': recent_songs,
+        'first_time': first_time,
+        'query_search':False,
+        'rock_songs':indexpage_rock_songs,
+        'last_played':last_played_song,
+    }
+    print(context)
+    return render(request, 'index.html', context=context)
+
 
 @login_required
 def song_create(request):
@@ -111,3 +169,70 @@ def play_song(request, song_id):
     data = Recent(song=songs,user=request.user)
     data.save()
     return redirect('song_list')
+@login_required(login_url='login')
+def play_song_index(request, song_id):
+    songs = Song.objects.filter(id=song_id).first()
+    # Add data to recent database
+    if list(Recent.objects.filter(song=songs,user=request.user).values()):
+        data = Recent.objects.filter(song=songs,user=request.user)
+        data.delete()
+    data = Recent(song=songs,user=request.user)
+    data.save()
+    return redirect('index')
+
+def recent(request):
+    #Last played song
+    last_played_list = list(Recent.objects.values('song_id').order_by('-id'))
+    if last_played_list:
+        last_played_id = last_played_list[0]['song_id']
+        last_played_song = Song.objects.get(id=last_played_id)
+    else:
+        last_played_song = Song.objects.get(id=7)
+    recent = list(Recent.objects.filter(user=request.user).values('song_id').order_by('-id'))
+    if recent and not request.user.is_anonymous :
+        recent_id = [each['song_id'] for each in recent]
+        recent_songs_unsorted = Song.objects.filter(id__in=recent_id,recent__user=request.user)
+        recent_songs = list()
+        for id in recent_id:
+            recent_songs.append(recent_songs_unsorted.get(id=id))
+    else:
+        recent_songs = None
+    if len(request.GET) > 0:
+        search_query = request.GET.get('q')
+        filtered_songs = recent_songs_unsorted.filter(Q(title__icontains=search_query)).distinct()
+        context = {'recent_songs': filtered_songs,'last_played':last_played_song,'query_search':True}
+        return render(request, 'recent.html', context)
+
+    context = {'recent_songs':recent_songs,'last_played':last_played_song,'query_search':False}
+    return render(request, 'recent.html', context=context)
+def rock_songs(request):
+
+    rock_songs = Song.objects.filter(genre='Rock')
+
+    #Last played song
+    last_played_list = list(Recent.objects.values('song_id').order_by('-id'))
+    if last_played_list:
+        last_played_id = last_played_list[0]['song_id']
+        last_played_song = Song.objects.get(id=last_played_id)
+    else:
+        last_played_song = Song.objects.get(id=7)
+
+    query = request.GET.get('q')
+
+    if query:
+        rock_songs = Song.objects.filter(Q(title__icontains=query)).distinct()
+        context = {'rock_songs': rock_songs}
+        return render(request, 'rock_songs.html', context)
+
+    context = {'rock_songs':rock_songs,'last_played':last_played_song}
+    return render(request, 'rock_songs.html',context=context)
+@login_required()
+def play_recent_song(request, song_id):
+    songs = Song.objects.filter(id=song_id).first()
+    # Add data to recent database
+    if list(Recent.objects.filter(song=songs,user=request.user).values()):
+        data = Recent.objects.filter(song=songs,user=request.user)
+        data.delete()
+    data = Recent(song=songs,user=request.user)
+    data.save()
+    return redirect('recent')
