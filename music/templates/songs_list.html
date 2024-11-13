@@ -92,9 +92,15 @@
         />
         <div class="overlay">
           <a
+          class="btn btn-outline-light mt-5 mx-1"
+          href="{% url 'song_play' song.id %}"
+          ><i class="fa fa-play" aria-hidden="true"></i
+        ></a>
+          
+          <a
             class="btn btn-outline-light mt-5 mx-1"
             href="{% url 'song_details' song.id %}"
-            ><i class="fa fa-play" aria-hidden="true"></i
+            ><i class="fa fa-info-circle" aria-hidden="true"></i
           ></a>
          
         </div>
@@ -111,5 +117,23 @@
 <br />
 <br />
 <br />
-
+{% if last_played %}
+<footer class="footer">
+  <div class="player" style="padding-left: 10px;padding-top:10px;background-color: #459dfb;">
+    <div class="left"><img src="{{last_played.song_cover}}" height="90" width="90" style="border-radius: 10px 10px 10px 10px;"></div>
+    <div class="right">
+       <div class="top">
+          <a class="song" style="margin-left: 15px;color: white;">{{last_played.title}}</a>
+          <a class="artist" style="margin-left: 15px;color:white">{{last_played.album}}</a>
+       </div>
+       <div class="bottom">
+        {% if first_time %}
+          <audio controls=""  name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.audio_file}}" type="audio/mpeg" ></audio>
+        {% else %}
+          <audio controls="" autoplay name="media" style="margin-left: 20px;margin-bottom: 10px;width: 1230px;height:30px"><source src="{{last_played.audio_file}}" type="audio/mpeg" ></audio>
+        {% endif %}
+        </div>
+    </div>
+</footer>
+{% endif %}
 {% endblock %}

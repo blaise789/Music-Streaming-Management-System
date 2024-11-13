@@ -30,3 +30,6 @@ class Song(models.Model):
         db_table = 'songs'
     def __str__(self):
         return self.title
+class Recent(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)

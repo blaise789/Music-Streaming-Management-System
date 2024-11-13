@@ -22,7 +22,7 @@ urlpatterns = [
     path('songs/create/', song_create, name='song_create'),
     path('songs/update/<int:song_id>/', song_update, name='song_update'),
     path('songs/delete/<int:song_id>/', song_delete, name='song_delete'),
-    path('songs/play/<int:song_id>/', song_play, name='song_play')
+    path('songs/play/<int:song_id>/', play_song, name='song_play')
 
 
    
