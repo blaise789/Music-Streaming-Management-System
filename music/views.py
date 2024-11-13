@@ -54,18 +54,18 @@ def song_list(request):
         'selected_genre': genre,
         'selected_artist': artist,
     })
-
+@login_required(login_url="/user/login",redirect_field_name=None)
 def song_detail(request, song_id):
-    song = get_object_or_404(Song, id=song_id)
-    playlists = Playlist.objects.filter(user=request.user) 
-    if request.method == 'POST':
-        playlist_name = request.POST.get('playlist')
-        playlist = Playlist.objects.get(name=playlist_name, user=request.user)
-        playlist.songs.add(song)
-        messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
-    return render(request, 'song_details.html', {'song': song, 'playlists': playlists})
-
-@login_required
+      song = get_object_or_404(Song, id=song_id)
+      playlists = Playlist.objects.filter(user=request.user) 
+      if request.method == 'POST':
+          playlist_name = request.POST.get('playlist')
+          playlist = Playlist.objects.get(name=playlist_name, user=request.user)
+          playlist.songs.add(song)
+          messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
+      return render(request, 'song_details.html', {'song': song, 'playlists': playlists})
+    
+@login_required(login_url="/user/login",redirect_field_name=None)
 def song_update(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     if request.method == 'POST':
@@ -78,7 +78,7 @@ def song_update(request, song_id):
         form = SongForm(instance=song)
     return render(request, 'song_form.html', {'form': form})
 
-@login_required
+@login_required(login_url="/user/login",redirect_field_name=None)
 def song_delete(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     if request.method == 'POST':
