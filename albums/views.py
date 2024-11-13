@@ -59,7 +59,7 @@ def add_song_to_album(request, album_id):
             return redirect('album_detail', album_id=album.id)
         song = get_object_or_404(Song, id=song_id)
         album.songs.add(song)
-        messages.success(request, f'Song "{song.title}" has been added to the album "{album.title}".')
-        return redirect('album_detail', album_id=album.id)
+        message= messages.success(request, f'Song "{song.title}" has been added to the album "{album.title}".')
+        return redirect('album_detail', album_id=album.id,message=message)
     return redirect('album_list')
 

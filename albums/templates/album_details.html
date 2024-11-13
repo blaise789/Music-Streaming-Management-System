@@ -75,12 +75,12 @@
     </form>
 
     {% comment %} handle errors {% endcomment %}
-    {% if messages %}
-        {% for message in messages %}
+    {% if message %}
+        {% comment %} {% for message in messages %} {% endcomment %}
             <div class="alert alert-{{ message.tags }} message mt-3" role="alert">
                 {{ message }}
             </div>
-        {% endfor %}
+        {% comment %} {% endfor %} {% endcomment %}
     {% endif %}
 </div>
 

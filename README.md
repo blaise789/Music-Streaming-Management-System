@@ -2,109 +2,47 @@
 
 
 
-## Getting started
-
-This is a Music Streaming Application built with django. the System provides the user 
+## Introduction
+Welcome to the Music Streaming Application, a powerful and user-friendly platform designed to elevate your music listening experience.
+ Built with Django, this application offers a dynamic and feature-rich environment for music enthusiasts like yourself
 ## Features
 
-- Shorten long URLs with a custom ID.
-- Retrieve the original URL using the custom ID.
-- Delete shortened URLs.
-- Validate URLs to ensure they are properly formatted.
+- Stream Music: Users can stream music directly from the platform.
+- Create and Manage Playlists: Create custom playlists and add tracks to them.
+- Search for Music: Users can search for their favorite songs, albums, and artists.
+- User Authentication: Secure login and registration for users.
+- Track Management: Add, update, and remove music tracks from the library.
+- Audio Quality Settings: Choose the preferred audio quality for streaming.
+
 
 ## Technologies Used
 
-- **Spring Boot**: For building the RESTful API.
-- **Spring Data JPA**: For database interactions.
-- **H2 Database**: Postgresql database for development and an In memory H2 for testing.
-- **JUnit & Mockito**: For unit and integration testing.
-- **Maven**: For dependency management and build.
-- **Swagger**: For API documentation.
+- Django
+- PostgreSQL
+- Bootstrap
 
-## API Endpoints
-
-### Create Short URL
-
-- **POST** `/api/v1/urlShortener`
-- **Request Body**:
-  ```json
-  {
-      "customId": "string", // Optional
-      "longUrl": "https://example.com",
-      "expiryTime": "2024-10-17T09:27:28.459Z" // Optional
-  } 
-  ```
-- **Request Body**:
- ```json 
-      {
-        "timestamp": "2024-10-16T11:27:43.022429600",
-        "data": {
-          "id": "b027fbf9-005b-4d69-885d-4a887dad3116",
-          "customId": "8X0SB4D7",
-          "longUrl": "https://web.whatsapp.com",
-          "expiryTime": "2024-10-17 09:27:28"
-        },
-        "message": "Record saved successfully",
-        "status": "CREATED"
-      }
-```
-### Redirect to Long URL
-
-- **GET** `/api/v1/urlShortener/{id}`
-- **Path Variable**: `id` - The custom ID of the shortened URL eg `8X0SB4D7`
-- **Request Body**:
- ```json 
-      {
-        "timestamp": "2024-10-16T11:30:00.829920400",
-        "data": "https://web.whatsapp.com",
-        "message": "Record retrieved successfully",
-        "status": "OK"
-      }
-```
-### Delete Short URL
-
-- **DELETE** `/api/v1/urlShortener/{id}`
-- **Path Variable**: `id` - The custom ID of the shortened URL eg `8X0SB4D7`
-- **Request Body**:
- ```json 
-      {
-        "timestamp": "2024-10-16T11:33:17.069717600",
-        "data": null,
-        "message": "Record removed successfully",
-        "status": "OK"
-      }
-```
 ## Prerequisites
 
-- [ ] [Java 17 or Higher](https://www.oracle.com/java/technologies/javase/17-relnote-issues.html) 
-- [ ] [Spring boot 3+](https://spring.io/blog/2024/05/23/spring-boot-3-3-0-available-now)
-- [ ] Maven
-- [ ] [Swagger UI](https://swagger.io/docs/)
+- [ ] [Python3]
+- [ ] [pip]
 ## Getting Started
 1. Clone the repository:
     ```
-   git clone https://github.com/yourusername/url-shortener-app.git
-   cd url-shortener-app
+   git clone https://github.com/blaise789/Music-Streaming-Management-System.git
+   cd Music-Streaming-Management-System
    ```
 2. Set database
-    Go to file `properties-dev.properties` in `/resource` folder then update the parameters below as per your database settings
-    ```
-   spring.datasource.url=jdbc:postgresql://localhost:5432/short_url_db?useSSL=false
-   spring.datasource.username=postgres
-   spring.datasource.password=postgres
-   ```
-3. Build the project:
-   ```
-   mvn clean install
-   ```
-4. Run the application:
-   ```
-   mvn spring-boot:run
-   ```
-5. Access the API at `http://localhost:8080/api/v1/urlShortener` 
+    Go to file `settings.py` in `project` folder then update the parameters below as per your database settings
+   
+3. run migrations
+  ```
+    python3 manage.py migrate
+    
+  ```  
+4. start the app on you local server 
+ ```
+   python3 manage.py runserver    
+  ```
+5. Access the APP at `http://localhost:8000` 
 
-## Testing
-Unit tests and integration tests are included in the project. To run the tests, use the following command:
-```
-mvn test
-```
+

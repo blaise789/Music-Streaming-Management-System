@@ -62,7 +62,7 @@ def song_detail(request, song_id):
           playlist_name = request.POST.get('playlist')
           playlist = Playlist.objects.get(name=playlist_name, user=request.user)
           playlist.songs.add(song)
-          messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
+          messages= messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
       return render(request, 'song_details.html', {'song': song, 'playlists': playlists})
     
 @login_required(login_url="/user/login",redirect_field_name=None)
@@ -73,7 +73,7 @@ def song_update(request, song_id):
         if form.is_valid():
             form.save()
             messages.success(request, f'Song "{song.title}" has been updated successfully.')
-            return redirect('song_list')
+            return redirect('song_details',song.id)
     else:
         form = SongForm(instance=song)
     return render(request, 'song_form.html', {'form': form})
