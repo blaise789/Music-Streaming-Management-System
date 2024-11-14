@@ -27,7 +27,7 @@ urlpatterns = [
     path('recent/', recent, name='recent'),
     path('rock_songs/', rock_songs, name='rock_songs'),
     path('play_recent_song/<int:song_id>/', play_recent_song, name='play_recent_song'),
-    
+    path('mymusic/', mymusic, name='mymusic'),
     
 
 

@@ -115,10 +115,10 @@ def song_list(request):
           last_played_song=None
     else:
         first_time = True
-        last_played_song=Song.objects.get(id=3)
+        last_played_song=None
         
     return render(request, 'songs_list.html', {
-        'first_time': first_time,  # Check if this is the first time user is accessing the page.
+        'first_time': first_time,  
         'songs': songs,
         'all_genres': all_genres,
         'all_artists': all_artists,
@@ -135,7 +135,7 @@ def song_detail(request, song_id):
           playlist_name = request.POST.get('playlist')
           playlist = Playlist.objects.get(name=playlist_name, user=request.user)
           playlist.songs.add(song)
-          messages= messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
+          messages.success(request, f'Song "{song.title}" has been added to "{playlist.name}".')
       return render(request, 'song_details.html', {'song': song, 'playlists': playlists})
     
 @login_required(login_url="/user/login",redirect_field_name=None)
@@ -206,9 +206,7 @@ def recent(request):
     context = {'recent_songs':recent_songs,'last_played':last_played_song,'query_search':False}
     return render(request, 'recent.html', context=context)
 def rock_songs(request):
-
     rock_songs = Song.objects.filter(genre='Rock')
-
     #Last played song
     last_played_list = list(Recent.objects.values('song_id').order_by('-id'))
     if last_played_list:
@@ -236,3 +234,6 @@ def play_recent_song(request, song_id):
     data = Recent(song=songs,user=request.user)
     data.save()
     return redirect('recent')
+
+def mymusic(request):
+    return render(request, 'mymusic.html')
