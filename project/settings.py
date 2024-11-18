@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'music',
     'playlists',
     'albums',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

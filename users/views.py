@@ -20,7 +20,7 @@ def signup(request):
             )
             user.save()
 
-            return redirect('/', user_id=user.id)
+            return redirect('login')
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
